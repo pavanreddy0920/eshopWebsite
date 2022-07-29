@@ -1,26 +1,41 @@
 import React from 'react';
 import './Product.css';
+import useStateValue from '../../state/stateProvider';
 
-function Product() {
+function Product({ id, title, price, rating, image }) {
+  const [state, dispatch] = useStateValue();
+
+  const addToBasket = () => {
+    dispatch({
+      type: 'ADD_TO_BASKET',
+      item: {
+        id,
+        title,
+        price,
+        rating,
+        image,
+      },
+    });
+  };
+
   return (
-    <div className="product">
+    <div key={id} className="product">
       <div className="product__info">
-        <p className="product__title">
-          "Bennett Mystic 15.6 inch Laptop Shoulder Messenger Sling Office Bag,
-          Water Repellent Fabric for Men and Women (Blue)"
-        </p>
+        <p className="product__title">{title}</p>
         <div className="product__price">
           <small>$</small>
-          <strong>30</strong>
+          <strong>{price}</strong>
         </div>
-        <div className="product__rating">⭐⭐⭐</div>
+        <div className="product__rating">
+          {Array(rating)
+            .fill()
+            .map((_, i) => (
+              <p>⭐</p>
+            ))}
+        </div>
       </div>
-      <img
-        src="https://images-na.ssl-images-amazon.com/images/I/71mEsHyzSCL._SL1000_.jpg"
-        alt="product_image"
-        className="product__image"
-      />
-      <button>Add to basket</button>
+      <img src={image} alt="product_image" className="product__image" />
+      <button onClick={addToBasket}>Add to basket</button>
     </div>
   );
 }
