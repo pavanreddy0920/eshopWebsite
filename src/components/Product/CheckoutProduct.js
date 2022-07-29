@@ -1,29 +1,40 @@
 import React from 'react';
 import './CheckoutProduct.css';
+import useStateValue from '../../state/stateProvider';
 
-function CheckoutProduct() {
+function CheckoutProduct({ id, title, price, rating, image }) {
+  const [{ basket }, dispatch] = useStateValue();
+
+  const removeFromMasket = () => {
+    dispatch({
+      type: 'REMOVE_FROM_BASKET',
+      id: id,
+    });
+  };
+
   return (
     <div>
       <div className="checkoutProduct">
         <img
-          src="https://images-na.ssl-images-amazon.com/images/I/6125mFrzr6L._AC_SX355_.jpg"
+          src={image}
           alt="product image"
           className="checkoutProduct__image"
         />
 
         <div className="checkoutProduct__info">
-          <p className="checkoutProduct__title">
-            "Samsung LC49RG90SSUXEN 49' Curved LED Gaming Monitor - Super Ultra
-            Wide Dual WQHD 5120 x 1440"
-          </p>
+          <p className="checkoutProduct__title">{title}</p>
           <p className="checkoutProduct__price">
             <small>$</small>
-            <strong>{1094.98}</strong>
+            <strong>{price}</strong>
           </p>
           <div className="checkoutProduct__rating">
-            <p>⭐</p>
+            {Array(rating)
+              .fill()
+              .map((_, i) => (
+                <p key={i}>⭐</p>
+              ))}
           </div>
-          <button>Remove from Basket</button>
+          <button onClick={removeFromMasket}>Remove from Basket</button>
         </div>
       </div>
     </div>
